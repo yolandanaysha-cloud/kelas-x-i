@@ -51,8 +51,8 @@ import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase
 import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,doc as fdoc,collection as fcol,setDoc,deleteDoc,addDoc,onSnapshot as fsnap,query,where as fwhere,orderBy as forder,limit as flimit} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 // ===== ISI 2 BAGIAN INI (lihat PANDUAN.md) =====
-const CFG={apiKey:"ISI",authDomain:"ISI",projectId:"ISI",appId:"ISI"};
-const OWNER_EMAIL="ISI_EMAIL_GOOGLE_ANDA@gmail.com";
+const CFG={apiKey:"AIzaSyDI_Ldc5HrqOpnJOnqhENm4K30oCQnOqO8",authDomain:"sekolah-14712.firebaseapp.com",projectId:"sekolah-14712",appId:"1:883143223718:web:f681940d1a0dfa7d4b0767"};
+const OWNER_EMAIL="pokemondefris@gmail.com";
 // ===============================================
 const app=initializeApp(CFG),auth=getAuth(app),fs=getFirestore(app);
 const mk=(c,cs)=>({where:(f,o,v)=>mk(c,[...cs,fwhere(f,o,v)]),orderBy:(f,d)=>mk(c,[...cs,forder(f,d)]),limit:n=>mk(c,[...cs,flimit(n)]),onSnapshot:(n,e)=>fsnap(cs.length?query(c,...cs):c,n,e),add:d=>addDoc(c,d)});
