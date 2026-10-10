@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kelas X-I – SMAN 4 Probolinggo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap">
+<style>
+:root{--bg:#1f1209;--card:#33200f;--gold:#e0b050;--gold2:#a8782a;--ink:#f6e8c8;--mut:#c9b48a;--red:#9c2a1a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(circle at 50% 50%,transparent 0 14px,rgba(224,176,80,.14) 15px 16px,transparent 17px),radial-gradient(circle at 0 0,rgba(224,176,80,.08) 0 8px,transparent 9px);background-size:40px 40px;color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.5}
+header{text-align:center;padding:14px 10px 6px;border-bottom:3px double var(--gold2);background:linear-gradient(#120a04,transparent)}
+header h1{font-family:'Cinzel Decorative',Georgia,serif;color:var(--gold);margin:4px 0 0;font-size:1.5rem;letter-spacing:1px}
+header small{color:var(--mut)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px;position:sticky;top:env(safe-area-inset-top,0px);background:#150b05ee;z-index:5}
+nav button{flex:0 0 auto}
+button,select,input,textarea{font:inherit}
+button{background:linear-gradient(var(--gold),var(--gold2));color:#2a1604;border:0;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer}
+button.on{outline:2px solid #fff6}
+button.sec{background:#0000;color:var(--gold);border:1px solid var(--gold2)}
+button.del{background:var(--red);color:#fff}
+main{max-width:760px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--gold2);border-radius:14px;padding:14px;margin:10px 0;box-shadow:inset 0 0 0 3px #0003}
+h2{color:var(--gold);margin:.2em 0 .5em;font-family:'Cinzel Decorative',Georgia,serif;font-size:1.15rem}
+label{display:block;margin:8px 0 3px;color:var(--mut)}
+select,input[type=text],input[type=date],textarea,input[type=number]{width:100%;background:#1a0f06;color:var(--ink);border:1px solid var(--gold2);border-radius:8px;padding:8px}
+textarea{min-height:110px}
+.mut{color:var(--mut);font-size:.9rem}
+.ok{color:#8fd48f}.bad{color:#ff9d8a}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--gold2)}
+.stack{display:flex;flex-direction:column;gap:10px}
+.pk{display:flex;align-items:center;gap:12px;background:#1a0f06;border:1px solid var(--gold2);border-radius:12px;padding:8px}
+.pk img,.pk .av{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex:none}
+.av{display:flex;align-items:center;justify-content:center;background:var(--gold2);color:#2a1604;font-weight:700;font-size:1.4rem}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;font-size:.85rem;min-width:100%}
+th,td{border:1px solid var(--gold2);padding:3px 5px;white-space:nowrap}
+th{background:#120a04;color:var(--gold)}
+td input{width:72px;padding:3px}td input[type=checkbox]{width:22px;height:22px;padding:0;accent-color:#e0b050}
+.thumb{width:44px;height:44px;object-fit:cover;border-radius:6px}
+.flash{animation:f .4s 6}@keyframes f{50%{background:var(--red)}}
+</style></head><body>
+<header>
+<svg width="54" height="64" viewBox="0 0 54 64" aria-hidden="true"><path d="M27 3C40 16 50 30 49 45c-1 11-10 17-22 17S6 56 5 45C4 30 14 16 27 3Z" fill="#e0b050" stroke="#a8782a" stroke-width="2"/><path d="M27 14c8 10 14 20 13 31-1 7-6 11-13 11s-12-4-13-11c-1-11 5-21 13-31Z" fill="#33200f"/><path d="M27 22v34M27 36c-6-3-9-8-9-12M27 36c6-3 9-8 9-12M27 46c-5-2-7-5-8-8M27 46c5-2 7-5 8-8" stroke="#e0b050" stroke-width="2" fill="none"/></svg>
+<h1>Kelas X-I</h1><small>SMA Negeri 4 Probolinggo · Wali kelas: Galuh Fajri Kurniawan</small>
+</header>
+<nav id="nav"></nav>
+<main id="main"><div class="card">Memuat…</div></main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,doc as fdoc,collection as fcol,setDoc,deleteDoc,addDoc,onSnapshot as fsnap,query,where as fwhere,orderBy as forder,limit as flimit} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// ===== ISI 2 BAGIAN INI (lihat PANDUAN.md) =====
+const CFG={apiKey:"ISI",authDomain:"ISI",projectId:"ISI",appId:"ISI"};
+const OWNER_EMAIL="ISI_EMAIL_GOOGLE_ANDA@gmail.com";
+// ===============================================
+const app=initializeApp(CFG),auth=getAuth(app),fs=getFirestore(app);
+const mk=(c,cs)=>({where:(f,o,v)=>mk(c,[...cs,fwhere(f,o,v)]),orderBy:(f,d)=>mk(c,[...cs,forder(f,d)]),limit:n=>mk(c,[...cs,flimit(n)]),onSnapshot:(n,e)=>fsnap(cs.length?query(c,...cs):c,n,e),add:d=>addDoc(c,d)});
+const D={doc:p=>({set:d=>setDoc(fdoc(fs,p),d),delete:()=>deleteDoc(fdoc(fs,p)),onSnapshot:(n,e)=>fsnap(fdoc(fs,p),n,e)}),collection:p=>mk(fcol(fs,p),[])};
+const NAMES="AISYAH SWAROVZKY WARDHANI|ALDO EKA OKTAFIANO|ALEX BIMA ACHSAN|ALIFIA KIRKA ANNURO|CANTIKA NAVIATUL ISLAMIYAH|DEFRIS RAVASYA AZRIEL|FARDAN ICHSAN FARIZHI|FATHUR AGUS ROHMAN|FAUZIYYAH RAFA FILIA SANI|FIDIY MEIDA NURIL IZZATI|GIAN AGESTRA FIRMANSYAH|HOLIDA ZULFA SETYANINGTYAS|JESSICA RAMADHANI WIDIAWAN|KEYSEA ALIESHA KHOLIL|KRISNA EKA KURNIAWAN|MOH YASSIR ANSHORY|MUHAMMAD AZRIL AMIRUDIN|MUHAMMAD FADIL KURNIAWAN|MUHAMMAD ISOM ALBUSTOMI|MUSRIFATUN HASANAH|MUTIARA SYARAFANI ARIFIN|NASYWAH AMIRAH FIRDAUSI|NAZIL ROHMATULLAH|NURUL HIDAYAH|PUTRA IQBAL NURROHMMAD|RAFA DWI NURMAGFIROH|RATIH DWI HIDAYAH|RAYHAN NABIL SALIM|RENGGANIS ZIEVHARA AZZAHRAH NURIVAN|SAFA LAILATUL MARWAH|SAFIRA EKA AGUSTINA|SELVIA PUTRI ANASTASYA|SHAFIQAH RADIFAH KHAIRUNISA PUTRI ANDYNI|TRIFOSA ANINDYA JUNAEDI|VERLYN ATHALIA HARDYN SUSANTO|WAVITO ADIS AKMAL";
+const JAD={senin:"Jam 2-3 · Seni Budaya — Dyah Iswarini\nJam 4-5 · Pend. Pancasila — Imro'atul Azizah\nJam 6-7 · PJOK — Moh. Husnullah Anam\nJam 8 · Ekonomi — Wahyu Praptanti\nJam 9 · B. Indonesia — Muh. Sholehuddin\nJam 10 · Geografi — Dwi Agustiningrum",
+selasa:"Jam 1 · Sejarah — Galuh Fajri Kurniawan\nJam 2-3 · Biologi — Andri Subekti Jonatha\nJam 4-5 · Geografi — Dwi Agustiningrum\nJam 6-7 · Fisika — Ita Dwi Irawati\nJam 8-9 · B. Indonesia — Muh. Sholehuddin\nJam 10 · Bahasa Inggris — Nurul Hayati",
+rabu:"Jam 1 · PJOK — Moh. Husnullah Anam\nJam 2-3 · Ekonomi — Wahyu Praptanti\nJam 4 · PABP — Moh. Sulton Nurrahman\nJam 5-6 · Kimia — Rosalita Gita Purnama\nJam 7-8 · Matematika — Alina Mahdia Desbi\nJam 9-10 · Sejarah — Galuh Fajri Kurniawan",
+kamis:"Jam 1-2 · Bahasa Inggris — Nurul Hayati\nJam 3-4 · Informatika — Sigit Hadi Waluyo\nJam 5 · Matematika — Alina Mahdia Desbi\nJam 6 · Fisika — Ita Dwi Irawati\nJam 7 · Biologi — Andri Subekti Jonatha\nJam 8 · Sosiologi — Neneng Widiyawati\nJam 9 · BK — Pujiati\nJam 10 · Mulok Jepang — Abdurrahman",
+jumat:"Jam 4 · Kimia — Rosalita Gita Purnama\nJam 5-6 · Sosiologi — Neneng Widiyawati"};
+const $=id=>document.getElementById(id);
+const E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const HARI=['minggu','senin','selasa','rabu','kamis','jumat','sabtu'];
+const BUL=['Jul','Agu','Sep','Okt','Nov','Des','Jan','Feb','Mar','Apr','Mei','Jun'];
+const DEF=NAMES.split('|').map((n,i)=>[i+1,n]);
+const PRDEF="TUGAS RUMAH:\n1. Kimia : melengkapi catatan\n2. Sosiologi :\n   - menuliskan kegiatan masing-masing yang berkaitan dengan 7 KAIH bagian bermasyarakat\n   - menjawab 10 soal yang sudah dikirim";
+const tgl=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Jakarta'});
+const hari=HARI[new Date(tgl+'T00:00:00').getDay()];
+let db=D,user,room,uid,isOwner=false,realOwner=false,tab='absen',aDate=tgl.slice(0,7),listen=false,unA=null;
+const S={sis:[],jad:{},pik:{},role:null,sid:null,pr:null,kas:{},mine:null,acc:[],roles:{},rows:[],mem:[],loaded:{}};
+try{listen=localStorage.getItem('alarm')==='1'}catch(e){}
+const sek=()=>isOwner||S.role==='pemimpin'||S.role==='sekretaris', ben=()=>isOwner||S.role==='pemimpin'||S.role==='bendahara';
+const me=()=>S.sis.find(s=>s.n==S.sid);
+const nm=n=>(S.sis.find(s=>s.n==n)||{}).nama||('No. '+n);
+function absTable(){const [y,m]=aDate.split('-').map(Number),dn=new Date(y,m,0).getDate(),M={};S.rows.forEach(r=>{M[r.no+'_'+r.tgl]=r});S.map=M;const sy={Hadir:'✔',Izin:'I',Sakit:'S',Alpa:'A'};
+return `<div class="card"><h2>Data Absen</h2><input type="month" id="ad" value="${aDate}"><p class="mut">Ketuk tanda untuk melihat foto bukti. ✔ Hadir, I Izin, S Sakit, A Alpa. Kolom H = total hadir.</p><div class="sc"><table><tr><th>No</th><th>Nama</th>${Array.from({length:dn},(_,i)=>`<th>${i+1}</th>`).join('')}<th>H</th></tr>${S.sis.map(s=>{let h=0;const c=Array.from({length:dn},(_,i)=>{const d=aDate+'-'+String(i+1).padStart(2,'0'),r=M[s.n+'_'+d];if(!r)return '<td></td>';if(r.ket==='Hadir')h++;return `<td style="text-align:center"><span style="cursor:pointer;font-weight:700" data-a="foto" data-k="${s.n}_${d}" class="${r.ket==='Hadir'?'ok':'bad'}">${sy[r.ket]||r.ket}</span></td>`}).join('');return `<tr><td>${s.n}</td><td>${E(s.nama)}</td>${c}<td>${h}</td></tr>`}).join('')}</table></div></div>`}
+
+function compress(file,max,q){return new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const i=new Image();i.onerror=no;i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext('2d').drawImage(i,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',q))};i.src=r.result};r.readAsDataURL(file)})}
+
+const TABS=()=>[['absen','Absen'],['jadwal','Jadwal'],['piket','Piket'],['pr','PR Hari Ini'],['kas','Uang Kas'],['kenangan','Kenangan'],['keluar','Keluar'],...(isOwner?[['admin','Pemilik']]:(S.role==='pemimpin'?[['jabatan','Jabatan']]:[]))];
+function nav(){$('nav').innerHTML=(realOwner?`<button class="sec" data-a="prev">${isOwner?'👁 Lihat sebagai siswa':'↩ Kembali ke pemilik'}</button>`:'')+TABS().map(t=>`<button class="${t[0]==tab?'on':'sec'}" data-a="tab" data-t="${t[0]}">${t[1]}</button>`).join('')}
+function render(force){const a=document.activeElement;if(!force&&a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&$('main').contains(a))return;nav();$('main').innerHTML=V[tab]()}
+
+const V={
+absen(){
+ if(!S.loaded.acc)return '<div class="card">Memuat…</div>';
+ if(!S.sis.length)return '<div class="card"><h2>Absen Harian</h2>Daftar siswa belum diisi oleh pemilik.</div>';
+ if(!S.sid)return `<div class="card"><h2>Daftar Akun</h2><p class="mut">Pilih namamu sekali saja untuk menghubungkan akun ini.</p><label>Nama</label><select id="reg">${S.sis.map(s=>`<option value="${s.n}">${s.n}. ${E(s.nama)}</option>`).join('')}</select><p><button data-a="reg">Daftar</button></p></div>`;
+ const s=me()||{};
+ let h=`<div class="card"><h2>Absen ${tgl}</h2>`;
+ if(S.mine)h+=`<p class="ok">✔ Sudah absen: ${E(S.mine.ket)} (no. ${S.mine.no})</p>`;
+ h+=`<label>Nama</label><input type="text" value="${E(s.nama)}" disabled><label>Nomor absen</label><input type="text" value="${s.n||''}" disabled>
+ <label>Keterangan</label><select id="ket"><option>Hadir</option><option>Izin</option><option>Sakit</option><option>Alpa</option></select>
+ <label>Bukti foto</label><input type="file" id="foto" accept="image/*"><p><button data-a="absen">${S.mine?'Perbarui absen':'Kirim absen'}</button> <span id="msg" class="mut"></span></p></div>`;
+ return h},
+jadwal(){
+ const t=S.jad[hari];
+ return `<div class="card"><h2>Jadwal Pelajaran – ${hari.toUpperCase()}</h2>${t?`<ol>${t.split('\n').filter(x=>x.trim()).map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:`<p class="mut">${hari=='sabtu'||hari=='minggu'?'Hari ini libur.':'Jadwal hari ini belum diisi pemilik.'}</p>`}</div>`},
+piket(){
+ const ns=(S.pik[hari]||'').split(/[ ,]+/).filter(Boolean);
+ return `<div class="card"><h2>Piket Kelas – ${hari.toUpperCase()}</h2><div class="stack">${ns.map(n=>{const s=S.sis.find(x=>x.n==n);return s?`<div class="pk">${s.foto?`<img src="${s.foto}">`:`<div class="av">${E(s.nama[0])}</div>`}<b>${s.n}. ${E(s.nama)}</b></div>`:''}).join('')||'<p class="mut">Belum ada jadwal piket hari ini.</p>'}</div></div>`},
+pr(){
+ const t=S.pr==null?PRDEF:S.pr;
+ return `<div class="card"><h2>PR Hari Ini</h2>${sek()?`<textarea id="prt" style="min-height:220px">${E(t)}</textarea><p><button data-a="pr">Simpan PR</button> <span id="msg" class="mut"></span></p><p class="mut">Kamu bisa mengedit (sekretaris/pemilik).</p>`:`<div style="white-space:pre-wrap">${E(t)}</div><p class="mut">Hanya sekretaris yang dapat mengedit.</p>`}</div>`},
+keluar(){return `<div class="card"><h2>Keluar</h2><p class="mut">Keluar dari akun Google di perangkat ini.</p><button class="del" data-a="out">Keluar dari akun</button></div>`},
+kas(){
+ if(!S.sis.length)return '<div class="card">Daftar siswa belum diisi.</div>';
+ const can=ben();
+ return `<div class="card"><h2>Uang Kas</h2><p class="mut">${can?'Centang kotak untuk bulan yang sudah bayar, kosongkan jika belum.':'Hanya bendahara yang dapat mengedit.'}</p><div class="sc"><table><tr><th>No</th><th>Nama</th>${BUL.map(b=>`<th>${b}</th>`).join('')}</tr>${S.sis.map(s=>`<tr><td>${s.n}</td><td>${E(s.nama)}</td>${BUL.map((b,i)=>{const v=S.kas[s.n+'_'+i]||'';return `<td style="text-align:center">${can?`<input type="checkbox" data-k="${s.n}_${i}" ${v?'checked':''}>`:(v?'<span class="ok">✔</span>':'')}</td>`}).join('')}</tr>`).join('')}</table></div></div>`},
+kenangan(){
+ return `<div class="card"><h2>Kenangan</h2><label>Tambah foto</label><input type="file" id="mf" accept="image/*"><label>Keterangan (opsional)</label><input type="text" id="mc"><p><button data-a="mem">Unggah</button> <span id="msg" class="mut"></span></p></div><div class="card"><button class="sec" data-a="shuf">🔀 Acak</button><div class="grid" style="margin-top:8px">${S.mem.map(m=>`<figure style="margin:0"><img src="${m.img}"><figcaption class="mut">${E(m.cap)}</figcaption>${isOwner?`<button class="del" data-a="dmem" data-id="${m.id}">Hapus</button>`:''}</figure>`).join('')||'<p class="mut">Belum ada foto.</p>'}</div></div>`},
+jabatan(){return `<div class="card"><h2>Jabatan Akun</h2><p class="mut">Atur jabatan akun siswa yang sudah mendaftar.</p>${S.acc.map(a=>`<p>${E(nm(a.sid))} <select data-r="${a.id}">${['','pemimpin','sekretaris','bendahara'].map(r=>`<option value="${r}" ${(S.roles[a.id]||'')==r?'selected':''}>${r==='pemimpin'?'pemimpin tertinggi':(r||'siswa biasa')}</option>`).join('')}</select></p>`).join('')||'<p class="mut">Belum ada yang mendaftar.</p>'}</div>`},
+admin(){
+ const sisTxt=(S.sis.length?S.sis.map(s=>[s.n,s.nama]):DEF).map(x=>x.join('|')).join('\n');
+ const days=['senin','selasa','rabu','kamis','jumat'];
+ return `<div class="card"><h2>Daftar Siswa</h2><p class="mut">Satu baris: nomor|NAMA</p><textarea id="sis" style="min-height:200px">${E(sisTxt)}</textarea><p><button data-a="sis">Simpan siswa</button> <span id="msg" class="mut"></span></p>
+ <details open><summary>Foto siswa (untuk piket)</summary>${S.sis.map(s=>`<p>${s.n}. ${E(s.nama)} ${s.foto?`<img class="thumb" src="${s.foto}">`:''}<input type="file" accept="image/*" data-pf="${s.n}"></p>`).join('')}</details></div>
+ <div class="card"><h2>Jadwal Pelajaran</h2>${days.map(d=>`<label>${d}</label><textarea data-j="${d}" style="min-height:80px">${E(S.jad[d]||JAD[d]||'')}</textarea>`).join('')}<p><button data-a="jad">Simpan jadwal</button></p></div>
+ <div class="card"><h2>Jadwal Piket</h2><p class="mut">Isi nomor absen dipisah koma, contoh: 3,8,15</p>${days.map(d=>`<label>${d}</label><input type="text" data-p="${d}" value="${E(S.pik[d]||'')}">`).join('')}<p><button data-a="pik">Simpan piket</button></p></div>
+ <div class="card"><h2>Jabatan Akun</h2><p class="mut">Akun yang sudah mendaftar:</p>${S.acc.map(a=>`<p>${E(nm(a.sid))} <select data-r="${a.id}">${['','pemimpin','sekretaris','bendahara'].map(r=>`<option value="${r}" ${(S.roles[a.id]||'')==r?'selected':''}>${r==='pemimpin'?'pemimpin tertinggi':(r||'siswa biasa')}</option>`).join('')}</select></p>`).join('')||'<p class="mut">Belum ada yang mendaftar.</p>'}</div>
+ ${absTable()}`}
+};
+
+function say(t,c){const m=$('msg');if(m){m.textContent=t;m.className=c||'mut'}}
+const A={
+ tab(b){tab=b.dataset.t;render(true)},
+ login(){signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>alert(e.message))},
+ out(){signOut(auth).then(()=>location.reload())},
+ prev(){isOwner=!isOwner;if(!isOwner&&(tab==='admin'))tab='absen';render(true)},
+ foto(b){const r=(S.map||{})[b.dataset.k];if(!r)return;const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#000d;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9;padding:12px;color:#fff';o.innerHTML=`<img src="${r.foto}" style="max-width:100%;max-height:75%;border-radius:10px"><p>${E(r.nama)} · ${E(r.tgl)} · ${E(r.ket)}</p><button>Tutup</button>`;o.onclick=()=>o.remove();document.body.appendChild(o)},
+ async reg(){await db.doc('accounts/'+uid).set({sid:+$('reg').value})},
+ async absen(){const f=$('foto').files[0];if(!f)return say('Pilih foto bukti dulu.','bad');say('Mengirim…');
+  try{const s=me(),foto=await compress(f,640,.6);await db.doc('absen/'+tgl+'_'+uid).set({tgl,uid,no:s.n,nama:s.nama,ket:$('ket').value,foto,t:Date.now()});say('Terkirim ✔','ok')}catch(e){say('Gagal: '+(e.message||e.code),'bad')}},
+ async pr(){try{await db.doc('pr/today').set({text:$('prt').value});say('Tersimpan ✔','ok')}catch(e){say('Gagal menyimpan','bad')}},
+ async mem(){const f=$('mf').files[0];if(!f)return say('Pilih foto.','bad');say('Mengunggah…');
+  try{const img=await compress(f,800,.6);await db.collection('kenangan').add({img,cap:$('mc').value,t:Date.now()});say('Berhasil ✔','ok')}catch(e){say('Gagal: '+(e.message||e.code),'bad')}},
+ shuf(){S.mem.sort(()=>Math.random()-.5);render(true)},
+ async dmem(b){if(isOwner)await db.doc('kenangan/'+b.dataset.id).delete()},
+ async sis(){const list=$('sis').value.split('\n').map(l=>l.split('|')).filter(p=>p[0]&&p[1]).map(p=>{const n=+p[0].trim(),o=S.sis.find(s=>s.n==n);return {n,nama:p.slice(1).join('|').trim(),foto:(o&&o.foto)||''}});
+  try{await db.doc('config/siswa').set({list});say('Tersimpan ✔','ok')}catch(e){say('Gagal','bad')}},
+ async jad(){const o={};document.querySelectorAll('[data-j]').forEach(t=>o[t.dataset.j]=t.value);await db.doc('config/jadwal').set(o);alert('Jadwal tersimpan')},
+ async pik(){const o={};document.querySelectorAll('[data-p]').forEach(t=>o[t.dataset.p]=t.value);await db.doc('config/piket').set(o);alert('Piket tersimpan')}
+};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A[b.dataset.a](b)});
+document.addEventListener('change',async e=>{const t=e.target;
+ try{
+ if(t.dataset.k!==undefined&&ben()){const v=t.checked?1:0;S.kas[t.dataset.k]=v;await db.doc('kas/data').set({...S.kas})}
+ else if(t.dataset.r){if(t.value)await db.doc('roles/'+t.dataset.r).set({role:t.value});else await db.doc('roles/'+t.dataset.r).delete()}
+ else if(t.dataset.pf){const n=+t.dataset.pf,foto=await compress(t.files[0],160,.7);await db.doc('config/siswa').set({list:S.sis.map(s=>s.n==n?{...s,foto}:s)})}
+ else if(t.id==='ad'){aDate=t.value;watchAbsen()}
+ }catch(err){alert('Gagal menyimpan: '+(err.message||err.code||err))}
+});
+
+function watchAbsen(){if(unA)unA();if(!isOwner)return;unA=db.collection('absen').where('tgl','>=',aDate+'-01').where('tgl','<=',aDate+'-31').onSnapshot(q=>{S.rows=q.docs.map(d=>d.data()).sort((a,b)=>a.no-b.no);render()},()=>{})}
+
+function showLogin(){$('nav').innerHTML='';$('main').innerHTML='<div class="card"><h2>Masuk</h2><p>Masuk dengan akun Google untuk membuka web kelas.</p><button data-a="login">Masuk dengan Google</button></div>'}
+let started=false;
+onAuthStateChanged(auth,u=>{if(!u){showLogin();return}if(!started){started=true;start(u)}});
+async function start(u){
+ uid=u.uid;isOwner=(u.email||'').toLowerCase()===OWNER_EMAIL.toLowerCase();realOwner=isOwner;
+ const w=(p,f)=>db.doc(p).onSnapshot(s=>{f(s.exists()?s.data():null);render()},()=>{});
+ w('config/siswa',d=>S.sis=(d&&d.list)||[]);
+ w('config/jadwal',d=>S.jad=d||{});
+ w('config/piket',d=>S.pik=d||{});
+ w('pr/today',d=>S.pr=d?d.text:null);
+ w('kas/data',d=>S.kas=d||{});
+ w('roles/'+uid,d=>S.role=d?d.role:null);
+ w('accounts/'+uid,d=>{S.sid=d?d.sid:null;S.loaded.acc=true});
+ w('absen/'+tgl+'_'+uid,d=>S.mine=d);
+ db.collection('kenangan').orderBy('t','desc').limit(40).onSnapshot(q=>{S.mem=q.docs.map(d=>({id:d.id,...d.data()})).sort(()=>Math.random()-.5);render()},()=>{});
+ {
+  db.collection('accounts').onSnapshot(q=>{S.acc=q.docs.map(d=>({id:d.id,sid:d.data().sid}));render()},()=>{});
+  db.collection('roles').onSnapshot(q=>{S.roles={};q.docs.forEach(d=>S.roles[d.id]=d.data().role);render()},()=>{});
+  watchAbsen();
+ }
+ render(true);
+}
+</script></body></html>
